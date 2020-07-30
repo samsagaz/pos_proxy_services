@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
    
-    
-
     <record model="ir.ui.view" id="fiscal_printer_uom_form">
         <field name="name">fiscal.printer.uom.form</field>
         <field name="model">uom.uom</field>
