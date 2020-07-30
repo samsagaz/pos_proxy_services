@@ -20,10 +20,4 @@
 #
 ##############################################################################
 
-#from . import base_config_settings
-#from . import res_partner
-#from . import res_users
-#from . import uom, account_journal, pos_config
 from . import uom, pos_config
-#from . import base_tools
-#from . import partner
