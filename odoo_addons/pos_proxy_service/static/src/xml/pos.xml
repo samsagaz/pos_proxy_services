@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="point_of_sale.template" xml:space="preserve">
+    
+
+    <t t-extend="UsernameWidget">
+
+        <t t-jquery='.username' t-operation='before'>
+            <span class="close_fiscal" style="float:right;
+    color:#DDD;
+    font-size:16px;
+    margin-right:32px;
+    line-height: 48px;
+    font-style:italic;
+    cursor: pointer;">
+	            Cierres Fiscales
+	        </span>
+        </t>
+    </t>
+    
+    
+</templates>
