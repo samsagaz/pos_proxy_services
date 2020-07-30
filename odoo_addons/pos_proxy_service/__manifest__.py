@@ -33,6 +33,7 @@
 	],
 	'data': [
 		'views/uom_view.xml',
+		'views/account_journal_view.xml',
 		'views/pos_config_view.xml',
 		'views/templates.xml'
 	],
