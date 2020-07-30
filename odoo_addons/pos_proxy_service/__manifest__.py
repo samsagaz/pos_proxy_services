@@ -32,18 +32,17 @@
 		'point_of_sale'
 	],
 	'data': [
-		#'security/ir.model.access.csv',
-		#'views/account_journal_view.xml',
 		'views/uom_view.xml',
+		'views/account_journal_view.xml',
 		'views/pos_config_view.xml',
 		'views/templates.xml'
 	],
 	'qweb': [
         'static/src/xml/pos.xml',        
-    ],
+    	],
 	'external_dependencies': {
    
-    },
+    	},
         'price': 185,
         'currency': 'EUR',
         'installable': True,
