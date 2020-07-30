@@ -2,7 +2,6 @@ from odoo import api, fields, tools, models, _
 from odoo.exceptions import UserError
 
 
-
 class ProductUoM(models.Model):
     _inherit = 'uom.uom'
 
