@@ -3,8 +3,8 @@ from odoo.exceptions import UserError
 
 
 
-class PosConfig(models.Model):
-    _inherit = 'pos.config'
+class AccountJournal(models.Model):
+    _inherit = 'account.journal'
 
     payment_afip = fields.Selection([
         ('1','CARTA_DE_CREDITO_DOCUMENTARIO'),
