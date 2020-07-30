@@ -20,4 +20,4 @@
 #
 ##############################################################################
 
-from . import uom, pos_config
+from . import uom, account_journal, pos_config
