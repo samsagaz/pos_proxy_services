@@ -127,9 +127,3 @@ class methods(http.Controller):
 	def call_kw(self, model, fields=False, offset=0, limit=False, domain=None, sort=None):			
 		res =  DataSet().do_search_read(model, fields=fields, offset=offset, limit=limit, domain=domain, sort=sort)
 		return valid_response(res)
-
-		
-		
-
-
-		
