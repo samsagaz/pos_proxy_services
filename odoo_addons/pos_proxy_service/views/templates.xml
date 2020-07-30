@@ -8,9 +8,7 @@
                 <script type="text/javascript" src="/pos_proxy_service/static/src/js/chrome.js"></script> 
                 <script type="text/javascript" src="/pos_proxy_service/static/src/js/gui.js"></script> 
             </xpath>
-            <!-- <xpath expr="//link[@id='pos-stylesheet']" position="after">
-	            <link rel="stylesheet" href="/pos_12_receipt/static/src/css/pos.css"/>
-	        </xpath> -->
+            
         </template>
     </data>
 </odoo>
