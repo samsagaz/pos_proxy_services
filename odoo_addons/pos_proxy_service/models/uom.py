@@ -4,7 +4,7 @@ from odoo.exceptions import UserError
 
 
 class ProductUoM(models.Model):
-    _inherit = 'uom.uom'
+    _inherit = 'product.uom'
 
     afip_uom =  uom_type = fields.Selection([
     	('0','SIN_DESCRIPCION'),
