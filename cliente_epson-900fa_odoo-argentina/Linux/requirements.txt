@@ -1,3 +1,4 @@
+#solo para Linux
 flask
 flask_cors
 flask_jsonpify
