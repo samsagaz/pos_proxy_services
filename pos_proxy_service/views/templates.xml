@@ -4,7 +4,7 @@
    <xpath expr="." position="inside">
 <script type="text/javascript" src="/pos_proxy_service/static/src/js/models.js"></script>
 <script type="text/javascript" src="/pos_proxy_service/static/src/js/screens.js"></script>
-<script type="text/javascript" src="/pos_proxy_service/static/src/js/pos_product_screen_button.js"/>
+<script type="text/javascript" src="/pos_proxy_service/static/src/js/cf-button.js"/>
        
    </xpath>
 </template>
