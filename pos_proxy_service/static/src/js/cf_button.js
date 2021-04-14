@@ -1,6 +1,6 @@
-odoo.define('pos_proxy_service.CFButtons', function(require) {
+odoo.define('pos_proxy_service.CfTicketButtons', function(require) {
 'use strict';
-   //const { Gui } = require('point_of_sale.Gui');
+   
    const PosComponent = require('point_of_sale.PosComponent');
    const { posbus } = require('point_of_sale.utils');
    const ProductScreen = require('point_of_sale.ProductScreen');
@@ -10,7 +10,7 @@ odoo.define('pos_proxy_service.CFButtons', function(require) {
 
 
 
-   class CFButtons extends PosComponent {
+   class CfTicketButtons extends PosComponent {
     constructor() {
             super(...arguments);
             useListener('click', this.onClick);
@@ -75,15 +75,15 @@ odoo.define('pos_proxy_service.CFButtons', function(require) {
 
        }
    }
-    CFButtons.template = 'CFButtons';
+    CfTicketButtons.template = 'CfTicketButtons';
 
     ProductScreen.addControlButton({
-    component: CFButtons,
+    component: CfTicketButtons,
     condition: function() {
     return this.env.pos.config.use_fiscal_printer;
     },
     });
 
-   Registries.Component.add(CFButtons);
-   return CFButtons;
+   Registries.Component.add(CfTicketButtons);
+   return CfTicketButtons;
 });
