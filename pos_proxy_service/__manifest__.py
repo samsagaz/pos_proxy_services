@@ -22,9 +22,9 @@
 	'summary': 'Proxy para usar odoo con impresores fiscales Argentinos para Epson / Hasar',
         'description': 'Impresor Fiscal Epson, Impresor Fiscal Hasar Vieja y Nueva generacion',
 	'version': '13.0.6.9',
-	'author': "pronexo.com",
+	'author': "Pronexo",
 	'license': "OPL-1",
-	'maintainer': 'pronexo.com',
+	'maintainer': 'Pronexo',
 	'category': 'sale',
         'website': 'https://www.pronexo.com',
 	'depends': [
