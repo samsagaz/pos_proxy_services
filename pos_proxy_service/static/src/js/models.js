@@ -244,8 +244,9 @@ models.PosModel = models.PosModel.extend({
 
             var uom = line.get_unit()
             if (uom) unit_measure = parseInt(uom.afip_uom);
-            if(line.product.barcode) code_intern = line.product.barcode;
-            else if(line.product.default_code) code_intern = line.product.default_code;
+            if (line.product.custom_barcode) code_intern = line.product.custom_barcode;
+            else if(line.product.barcode) code_intern = line.product.barcode;
+            // else if(line.product.default_code) code_intern = line.product.default_code;
 
             if(code_intern == '') code_intern = '11111';
             
@@ -283,6 +284,7 @@ models.PosModel = models.PosModel.extend({
                 'product_discount_general' : product_discount_general
 
             };
+            console.log(item_vals);
             items.push(item_vals);
         }
         return items;
