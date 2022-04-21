@@ -1,20 +1,19 @@
 #!/usr/bin/python3
-from flask import Flask, request
-
 import json
+
+from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from flask_jsonpify import jsonify
+
 app = Flask(__name__)
 CORS(app)
 
 
-
-	#print(message.sid)
 def response_cors(res):
 	res = {'response' : res}
 	response = jsonify(res)
 	response.headers.add('Access-Control-Allow-Origin', '*')
-	return response	
+	return response
 
 
 @app.route("/print_pos_ticket", methods=['GET','OPTIONS'])
@@ -27,17 +26,17 @@ def print_pos_ticket():
 	if isinstance(vals, dict):
 		json_vals = vals
 	elif isinstance(vals, str):
-		try:		
-			json_vals = json.loads(vals)			
+		try:
+			json_vals = json.loads(vals)
 		except Exception as e:
 			return str(e)
 	else:
 		return 'Formato de los valores incorrecto'
-	
-	response_printer = Interpreter.json_to_printer(json_vals)	
+
+	response_printer = Interpreter.json_to_printer(json_vals)
 	print('print_pos_ticket response_printer: ', response_printer)
 	return response_cors(response_printer)
-	
+
 @app.route("/print_pos_fiscal_close", methods=['GET','OPTIONS'])
 def print_pos_fiscal_close():
 	print('print_pos_fiscal_close: ', request.args)
@@ -50,12 +49,12 @@ def print_pos_fiscal_close():
 	return response_cors(response_printer)
 
 @app.route("/state_printer", methods=['GET','OPTIONS'])
-def state_printer():	
+def state_printer():
 	from Printer import CommandsInterface
-	response_state = CommandsInterface.EstadoEstacionRecibos()	
+	response_state = CommandsInterface.EstadoEstacionRecibos()
 	return response_cors(response_state)
 
-	
+
 #from Printer import InterpreterO
 #InterpreterO.test()
 
