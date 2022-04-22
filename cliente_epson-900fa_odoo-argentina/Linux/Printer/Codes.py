@@ -1,6 +1,3 @@
-
-
-
 from ctypes import byref, c_char, c_int, c_long, c_short, create_string_buffer
 
 

@@ -7,8 +7,8 @@ from .Codes import HighNivel, LowNivel
 
 def Conectar():
     Handle = DF.get_driver()
-    Handle.ConfigurarVelocidad(c_int(9600).value) # 9600, 19200, 38400, 57600, 115200
-    Handle.ConfigurarPuerto( "0" )
+    Handle.ConfigurarVelocidad(c_int(57600).value) # 9600, 19200, 38400, 57600, 115200
+    Handle.ConfigurarPuerto("0")
     res = Handle.Conectar()
     ConsultarDescripcionDeError(res, 'Coneccion Existosa')
     return Handle
@@ -32,7 +32,7 @@ def Cancelar(Handle=None):
 def ConsultarEstado(Handle, id_consulta):
 
     str_doc_response_max_len = 200
-    str_doc_response = create_string_buffer( b'\000' * str_doc_response_max_len )
+    str_doc_response = create_string_buffer(b'\000' * str_doc_response_max_len)
     res = Handle.ConsultarEstado(id_consulta, str_doc_response)
     ConsultarDescripcionDeError(res, 'Consulta de Estado')
     return res
@@ -43,7 +43,7 @@ def ConsultarDescripcionDeError(response, msj):
         return True
     else:
         str_doc_response_max_len = 200
-        str_doc_response = create_string_buffer( b'\000' * str_doc_response_max_len )
+        str_doc_response = create_string_buffer(b'\000' * str_doc_response_max_len)
         Handle.ConsultarDescripcionDeError(response, str_doc_response, str_doc_response_max_len)
         value_decode = str_doc_response.value.decode('latin1')
         #print('ConsultarDescripcionDeError: ', value_decode)
@@ -98,7 +98,7 @@ def ImprimirCierreX(Handle):
 
 def ObtenerRespuestaExtendida(Handle, numero_campo):
     largo_buffer_salida  = 200
-    buffer_salida = create_string_buffer( b'\000' * 100)
+    buffer_salida = create_string_buffer(b'\000' * 100)
     largo_final_buffer_salida = c_int()
     res = Handle.ObtenerRespuestaExtendida(numero_campo, buffer_salida, largo_buffer_salida, byref(largo_final_buffer_salida))
     ConsultarDescripcionDeError(res, 'ObtenerRespuestaExtendida Ok')
