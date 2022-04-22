@@ -1,7 +1,7 @@
 
 
 
-from ctypes import byref, c_int, c_char, c_long, c_short, create_string_buffer
+from ctypes import byref, c_char, c_int, c_long, c_short, create_string_buffer
 
 
 def string_to_ascci(val): 
@@ -170,8 +170,7 @@ class HighNivel:
 
 
 class LowNivel:
-	
-	GET_FIRMWARE_VERSION    = "020A|0000"    
+	GET_FIRMWARE_VERSION    = "020A|0000"
 	NUM_CAMPO_VERSION       = 1
 	NUM_CAMPO_VERSION_MAYOR = 3
 	NUM_CAMPO_VERSION_MENOR = 4
@@ -186,7 +185,7 @@ class LowNivel:
 	TICKET_PAYMENT          = "0A05|0000"
 	TICKET_CLOSE            = "0A06|0013"
 
-	TICKET_OPEN_FACTURA		= "0B01|0000" 
+	TICKET_OPEN_FACTURA		= "0B01|0000"
 	TICKET_ITEM_FACTURA 	= '0B02|0000'
 	TICKET_PAYMENT_FACTURA 	= '0B05|0000'
 	TICKET_DISCOUNT_FACTURA	= '0B04|0000'
@@ -237,7 +236,7 @@ class LowNivel:
 	def client_to_low_nivel(self, cliente):
 		TICKET_FACTURA = "0B01|0000"
 		TICKET_NC_OPEN_FIELDS = "|Nombre Comprador '1|Nombre Comprador '2|Domicilio Comprador '1|||T|30614104712|I||||"
-		
+
 		nombre_o_razon_social1 = '|' + cliente['nombre_o_razon_social1']
 		nombre_o_razon_social2 = '|' + cliente['nombre_o_razon_social2']
 		domicilio1 = '|' + cliente['domicilio1']
@@ -251,16 +250,15 @@ class LowNivel:
 		documento_asociado3 = '|' + cliente['documento_asociado3']
 		cheque_reintegro_turista = '|' + cliente['cheque_reintegro_turista']
 
-
 		values = nombre_o_razon_social1 + nombre_o_razon_social2 + domicilio1 + domicilio2 + domicilio3 + id_tipo_documento + numero_documento + id_responsabilidad_iva + documento_asociado1 + documento_asociado2 + documento_asociado3 + cheque_reintegro_turista
 		values = string_to_ascci(values)
-		
+
 		return values
+
 	def payment_to_low_nivel(self, payment):
 		#TICKET_PAYMENT_FIELDS   = "|Pago extra #1|Pago extra #2|10|Otra forma de pago|Detalle de cupones|06|1000"
 		try:
-			
-			payment['monto'] = str(self.monto_format(payment['monto']))			
+			payment['monto'] = str(self.monto_format(payment['monto']))
 			payment['cantidad_cuotas'] = str(payment['cantidad_cuotas'])
 
 			descripcion_extra1 = '|' + payment['descripcion_extra1']
@@ -272,12 +270,10 @@ class LowNivel:
 			monto = '|' + payment['monto']
 
 			values = descripcion_extra1 + descripcion_extra2 + cantidad_cuotas + descripcion + descripcion_cupones + codigo_forma_pago + monto
-			#print('values payment= ', values)
 			values = string_to_ascci(values)
 			return values
 
 
-			
 		except Exception as e:
 			raise Exception(e)
 	def item_to_low_nivel(self, item):
@@ -293,7 +289,7 @@ class LowNivel:
 			if 'description_extra4' in item:
 				description_extra4 = item['description_extra4']
 			price = '|' + self.price_format(item['price'])
-			
+
 			qty = '|' + self.qty_format(item['qty'])
 			iva = '|' + self.iva_format(item['iva'])
 
@@ -311,9 +307,8 @@ class LowNivel:
 			other_fields = '||||'
 			values = description_extra1 + description_extra2 + description_extra3 + description_extra4 + description + qty + price + iva + other_fields + code_intern + unit_measure + '|'
 			values = string_to_ascci(values)
-			print('values: ', values)
-			return values
 
+			return values
 		except Exception as e:
 			raise Exception(e)
 
@@ -325,7 +320,7 @@ class LowNivel:
 		if index_point > -1:
 			str_decimal = str_monto[index_point + 1:len(str_monto)]
 			str_integer = str_monto[0:index_point]
-			
+
 		else:
 			str_integer = str_monto
 
@@ -339,8 +334,6 @@ class LowNivel:
 				str_decimal += '0'
 		#print('entero: ', str_integer, '- str_decimal: ', str_decimal)
 		return str_integer + str_decimal
-		
-
 
 	def monto_format(self, monto):
 		str_monto = str(monto)
@@ -350,7 +343,6 @@ class LowNivel:
 		if index_point > -1:
 			str_decimal = str_monto[index_point + 1:len(str_monto)]
 			str_integer = str_monto[0:index_point]
-			
 		else:
 			str_integer = str_monto
 
@@ -372,7 +364,6 @@ class LowNivel:
 		if index_point > -1:
 			str_decimal = str_qty[index_point + 1:len(str_qty)]
 			str_integer = str_qty[0:index_point]
-			
 		else:
 			str_integer = str_qty
 
@@ -394,7 +385,6 @@ class LowNivel:
 		if index_point > -1:
 			str_decimal = str_price[index_point + 1:len(str_price)]
 			str_integer = str_price[0:index_point]
-			
 		else:
 			str_integer = str_price
 
@@ -417,7 +407,6 @@ class LowNivel:
 		if index_point > -1:
 			str_decimal = str_iva[index_point + 1:len(str_iva)]
 			str_integer = str_iva[0:index_point]
-			
 		else:
 			str_integer = str_iva
 
