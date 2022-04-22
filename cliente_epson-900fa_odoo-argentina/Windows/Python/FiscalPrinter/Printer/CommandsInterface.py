@@ -222,24 +222,22 @@ def TiqueFactura(values):
         EnviarComando(Handle, cmd)
         EnviarComando(Handle, '0707|0000')
         EnviarComando(Handle, '0707|0001')
-
         for item in values['items']:
             cmd = LowNivel.TICKET_ITEM_FACTURA + item
-            print(cmd)
-            # EnviarComando(Handle, cmd)
+            print("ITEMS:" + cmd)
+            EnviarComando(Handle, cmd)
         for discount in values['descuentos']:
             cmd = LowNivel.TICKET_DISCOUNT_FACTURA + discount
-            print(cmd)
-            # EnviarComando(Handle, cmd)
+            print("DESCUENTOS:" + cmd)
+            EnviarComando(Handle, cmd)
         for ajuste in values['ajustes']:
             cmd = LowNivel.TICKET_ADJUSTMENT_FACTURA + ajuste
-            print(cmd)
-            # EnviarComando(Handle, cmd)
+            print("AJUSTES:" + cmd)
+            EnviarComando(Handle, cmd)
         for pay in values['pagos']:
             cmd = LowNivel.TICKET_PAYMENT_FACTURA + pay
-            print(cmd)
-            # EnviarComando(Handle, cmd)
-
+            print("PAGOS:" + cmd)
+            EnviarComando(Handle, cmd)
         CerrarComprobante(Handle)
         Desconectar()
         return True
@@ -269,7 +267,6 @@ def TiqueFacturaNC(values):
         for pay in values['pagos']:
             cmd = LowNivel.TICKET_NC_PAYMENT_FACTURA + pay
             EnviarComando(Handle, cmd)
-
 
         CerrarComprobante(Handle)
         Desconectar()
