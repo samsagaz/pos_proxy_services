@@ -137,6 +137,7 @@ def json_to_printer(vals):
 		raise Exception(e)
 	return 'Error interno no se pudo imprimir el tiquet'
 
+jsonTicket = {
     "type": 83,
     "items": [
         {
