@@ -202,6 +202,7 @@ models.PosModel = models.PosModel.extend({
 
     get_footer: function(){
         let items = [];
+        let order_lines = this.get_order().get_orderlines();
         let vat_taxes_amount = 0;
         let other_taxes_amount = 0;
         for (let i = 0; i < order_lines.length; i++) {
