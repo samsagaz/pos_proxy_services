@@ -18,7 +18,6 @@ def Desconectar():
     res = Handle.Desconectar()
     ConsultarDescripcionDeError(res, 'Desconectada')
 
-
 def Cancelar(Handle=None):
     if not Handle:
         Handle = Conectar()
@@ -28,9 +27,7 @@ def Cancelar(Handle=None):
     except Exception as e:
         pass
 
-
 def ConsultarEstado(Handle, id_consulta):
-
     str_doc_response_max_len = 200
     str_doc_response = create_string_buffer(b'\000' * str_doc_response_max_len)
     res = Handle.ConsultarEstado(id_consulta, str_doc_response)
@@ -62,11 +59,10 @@ def AbrirComprobante(Handle, ID_TIPO_COMPROBANTE_TIQUET):
 def ImprimirItem(Handle):
     return #Este metodo no funciona correctamente en Python
 
-    res = Handle.ImprimirItem(HighNivel.ID_MODIFICADOR_AGREGAR, "Pizza", "10.000", "0.3000", 
+    res = Handle.ImprimirItem(HighNivel.ID_MODIFICADOR_AGREGAR, "Pizza", "10.000", "0.3000",
         HighNivel.ID_TASA_IVA_21_00, HighNivel.ID_IMPUESTO_NINGUNO, "", HighNivel.ID_CODIGO_INTERNO, "1234567890", "",
         HighNivel.AFIP_CODIGO_UNIDAD_MEDIDA_UNIDAD)
     ConsultarDescripcionDeError(res, 'Item Impreso')
-
 
 def CerrarComprobante(Handle):
     res = Handle.CerrarComprobante()
@@ -157,6 +153,11 @@ def Tique(values, nota_credito=False):
         for pay in values['pagos']:
             cmd = LowNivel.TICKET_PAYMENT + pay
             EnviarComando(Handle, cmd)
+
+        for extra in values['extras']:
+            cmd = LowNivel.TICKET_EXTRA + extra
+            EnviarComando(Handle, cmd)
+
         CerrarComprobante(Handle)
         Desconectar()
         return True
