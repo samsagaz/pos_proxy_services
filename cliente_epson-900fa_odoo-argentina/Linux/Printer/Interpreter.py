@@ -65,6 +65,7 @@ def json_to_printer(vals):
         pagos_low_nivel = []
         descuentos_low_nivel = []
         ajustes_low_nivel = []
+        footer_low_level = []
         ajuste = []
         nota_credito = False
         obj_lowNivel = LowNivel()
@@ -104,10 +105,14 @@ def json_to_printer(vals):
             if descuento["codigo_interno"] == "":
                 descuento["codigo_interno"] = "CodigoInterno4567890123456789012345678901234567890"
             descuentos_low_nivel.append(obj_lowNivel.descuento_to_low_nivel(descuento))
+
         for ajuste in vals["ajustes"]:
             if ajuste["codigo_interno"] == "":
                 ajuste["codigo_interno"] = "CodigoInterno4567890123456789012345678901234567890"
             ajustes_low_nivel.append(obj_lowNivel.descuento_to_low_nivel(ajuste))
+
+        for footer in vals["footer"]:
+            footer_low_level.append(obj_lowNivel.footer_to_low_nivel(footer))
 
         values = {
             "name": vals["name"],
@@ -115,6 +120,7 @@ def json_to_printer(vals):
             "pagos": pagos_low_nivel,
             "descuentos": descuentos_low_nivel,
             "ajustes": ajustes_low_nivel,
+            "footer": footer_low_level,
         }
         if type == 83:
             res = CI.Tique(values, nota_credito)

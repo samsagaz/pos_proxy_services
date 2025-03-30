@@ -10,13 +10,14 @@ def Conectar():
     Handle.ConfigurarVelocidad(c_int(57600).value) # 9600, 19200, 38400, 57600, 115200
     Handle.ConfigurarPuerto("0")
     res = Handle.Conectar()
-    ConsultarDescripcionDeError(res, 'Coneccion Existosa')
+    ConsultarDescripcionDeError(res, 'Conexion Existosa')
     return Handle
 
 def Desconectar():
     Handle = DF.get_driver()
     res = Handle.Desconectar()
     ConsultarDescripcionDeError(res, 'Desconectada')
+
 
 def Cancelar(Handle=None):
     if not Handle:
@@ -26,6 +27,7 @@ def Cancelar(Handle=None):
         ConsultarDescripcionDeError(res, 'Documentos Cancelados')
     except Exception as e:
         pass
+
 
 def ConsultarEstado(Handle, id_consulta):
     str_doc_response_max_len = 200
@@ -43,7 +45,7 @@ def ConsultarDescripcionDeError(response, msj):
         str_doc_response = create_string_buffer(b'\000' * str_doc_response_max_len)
         Handle.ConsultarDescripcionDeError(response, str_doc_response, str_doc_response_max_len)
         value_decode = str_doc_response.value.decode('latin1')
-        #print('ConsultarDescripcionDeError: ', value_decode)
+        print('ConsultarDescripcionDeError: ', value_decode)
         raise Exception(value_decode)
 
 def AbrirComprobante(Handle, ID_TIPO_COMPROBANTE_TIQUET):
@@ -63,6 +65,7 @@ def ImprimirItem(Handle):
         HighNivel.ID_TASA_IVA_21_00, HighNivel.ID_IMPUESTO_NINGUNO, "", HighNivel.ID_CODIGO_INTERNO, "1234567890", "",
         HighNivel.AFIP_CODIGO_UNIDAD_MEDIDA_UNIDAD)
     ConsultarDescripcionDeError(res, 'Item Impreso')
+
 
 def CerrarComprobante(Handle):
     res = Handle.CerrarComprobante()
@@ -124,7 +127,7 @@ def CargarPago(Handle, id_modificador ,codigo_forma_pago , cantidad_cuotas ,mont
 
 
 def Tique(values, nota_credito=False):
-    #print('Ticket: ', values)
+    print('Ticket: ', values)
     try:
         Desconectar()
         Handle =  Conectar()
@@ -153,11 +156,6 @@ def Tique(values, nota_credito=False):
         for pay in values['pagos']:
             cmd = LowNivel.TICKET_PAYMENT + pay
             EnviarComando(Handle, cmd)
-
-        for extra in values['extras']:
-            cmd = LowNivel.TICKET_EXTRA + extra
-            EnviarComando(Handle, cmd)
-
         CerrarComprobante(Handle)
         Desconectar()
         return True
@@ -228,7 +226,7 @@ def TiqueFactura(values):
         return str(e)
 
 def TiqueFacturaNC(values):
-    #print('TiqueFactura nota_credito: ')
+    print('TiqueFactura nota_credito: ')
     try:
         Desconectar()
         Handle =  Conectar()
