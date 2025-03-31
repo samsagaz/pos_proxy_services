@@ -1,7 +1,20 @@
 from . import DriverFiscal as DF
-from ctypes import byref, c_int, c_char, c_long, c_short, create_string_buffer
+from ctypes import byref, c_int, c_char, c_char_p, c_wchar_p, c_long, c_short, create_string_buffer
+
 from .Codes import HighNivel, LowNivel
 from . import Codes
+
+#	path disponibles (ConfigurarPuerto)
+#	default serial: /dev/usb/lp0
+#	“0” – USB.
+#	“1” – COM1 o ttyS0.
+#	“2” – COM2 o ttyS1.
+#	“ x ” – COM x o ttyS( x -1).
+#	“serial:COM x ” – COM x
+#	“serial: /dev/ttyS x ” – ttyS x
+#	“lan:192.168.1.1” – Http ip 192.168.1.1
+#	“lan:192.168.1.1:443” – Http ip 192.168.1.1 puerto 443
+
 def Conectar():
   Handle = DF.get_driver()
   Handle.ConfigurarVelocidad( c_int(9600).value )
@@ -9,7 +22,6 @@ def Conectar():
   res = Handle.Conectar()
   ConsultarDescripcionDeError(res, 'Coneccion Existosa')
   return Handle
-
 
 def Desconectar():
   Handle = DF.get_driver()
@@ -58,12 +70,10 @@ def AbrirComprobante(Handle, ID_TIPO_COMPROBANTE_TIQUET):
 
 def ImprimirItem(Handle):
     return #Este metodo no funciona correctamente en Python
-
     res = Handle.ImprimirItem(HighNivel.ID_MODIFICADOR_AGREGAR, "Pizza", "10.000", "0.3000",
         HighNivel.ID_TASA_IVA_21_00, HighNivel.ID_IMPUESTO_NINGUNO, "", HighNivel.ID_CODIGO_INTERNO, "1234567890", "",
         HighNivel.AFIP_CODIGO_UNIDAD_MEDIDA_UNIDAD)
     ConsultarDescripcionDeError(res, 'Item Impreso')
-
 
 def CerrarComprobante(Handle):
     res = Handle.CerrarComprobante()
@@ -84,15 +94,12 @@ def EnviarComando(Handle, cmd):
         ConsultarDescripcionDeError(res, 'Comando Exitoso')
 
 def ImprimirCierreZ(Handle):
-    #res = Handle.EnviarComando("0801|0C00")
     res = Handle.ImprimirCierreZ()
     ConsultarDescripcionDeError(res, 'Cierrre Z Impreso')
 
 def ImprimirCierreX(Handle):
-    #res = Handle.EnviarComando("0802|0C00")
     res =  Handle.ImprimirCierreX()
     print('ImprimirCierreX: ', res)
-    #res = Handle.ImprimirCierreZ()
     ConsultarDescripcionDeError(res, 'Cierrre X Impreso')
 
 def ObtenerRespuestaExtendida(Handle, numero_campo):
@@ -127,21 +134,27 @@ def CargarPago(Handle, id_modificador ,codigo_forma_pago , cantidad_cuotas ,mont
     res = Handle.CargarPago(id_modificador, codigo_forma_pago , cantidad_cuotas ,monto , descripcion_cupones , descripcion , descripcion_extra1 , descripcion_extra2)
     ConsultarDescripcionDeError(res, 'Pago Cargado')
 
+def setTrailer(Handle, trailer=[]):
+    """Establecer pie"""
+    for i, text in enumerate(trailer):
+        Handle.EstablecerCola(i + 1, text.encode('UTF-8'))
+
 def Tique(values, nota_credito=False):
-    #print('Ticket: ', values)
+    # print('Ticket: ', values)
     try:
         Desconectar()
         Handle =  Conectar()
+        setTrailer(Handle, values['footer'])
         Cancelar(Handle)
+
         if not nota_credito:
             AbrirComprobante(Handle, HighNivel.ID_TIPO_COMPROBANTE_TIQUET)
         else:
             AbrirComprobante(Handle, HighNivel.ID_TIPO_COMPROBANTE_TIQUE_NOTA_DE_CREDITO)
-        #CargarTextoExtra(Handle, 'N°: ' + values['name'])
-        EnviarComando(Handle, '0707|0000')
-        EnviarComando(Handle, '0707|0001')
-
+        # EnviarComando(Handle, '0707|0000') (Apertura de la Caja Registradora)
+        # EnviarComando(Handle, '0707|0001')
         #Handle.CargarComprobanteAsociado( "083-00001-00000027" )
+
         for item in values['items']:
             cmd = LowNivel.TICKET_ITEM + item
             EnviarComando(Handle, cmd)
@@ -160,6 +173,7 @@ def Tique(values, nota_credito=False):
 
         CerrarComprobante(Handle)
         Desconectar()
+
         return True
     except  Exception  as  e:
         #print('Exception: ',str(e))
@@ -201,15 +215,14 @@ def TiqueFactura(values):
         EnviarComando(Handle, cmd)
         EnviarComando(Handle, '0707|0000')
         EnviarComando(Handle, '0707|0001')
-
-
-        #print('---- cliente')
         for item in values['items']:
             cmd = LowNivel.TICKET_ITEM_FACTURA + item
             EnviarComando(Handle, cmd)
+
         for discount in values['descuentos']:
             cmd = LowNivel.TICKET_DISCOUNT_FACTURA + discount
             EnviarComando(Handle, cmd)
+
         for ajuste in values['ajustes']:
             cmd = LowNivel.TICKET_ADJUSTMENT_FACTURA + ajuste
             EnviarComando(Handle, cmd)

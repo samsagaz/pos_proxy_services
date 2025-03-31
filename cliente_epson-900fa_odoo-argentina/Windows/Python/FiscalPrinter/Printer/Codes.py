@@ -170,7 +170,6 @@ class HighNivel:
 
 
 class LowNivel:
-
     GET_FIRMWARE_VERSION    = "020A|0000"
     NUM_CAMPO_VERSION       = 1
     NUM_CAMPO_VERSION_MAYOR = 3
@@ -221,18 +220,6 @@ class LowNivel:
     DNF_ITEM_FIELDS         = "|Texto a imprimir"
     DNF_CLOSE_FIELDS        = "||||||"    # 6 campos
 
-
-    def footer_to_low_nivel(self, footer):
-        try:
-            footer_string = '|' + 'Regimen de Trans. Fiscal al Cons. (Ley 27.743)'
-            vat_amount = '|IVA Contenido:' + str(footer['vat_amount'])
-            other_taxes_amount = '|Otros Impuestos Nac. Indirectos:' + str(footer['other_taxes_amount'])
-            values = footer_string + vat_amount + other_taxes_amount
-            values = string_to_ascci(values)
-            return values
-        except Exception as e:
-            raise Exception(e)
-
     def descuento_to_low_nivel(self, descuento):
         descripcion = '|' + descuento['descripcion']
         monto = '|' +self. monto_descuento_format(descuento['monto'])
@@ -265,7 +252,6 @@ class LowNivel:
     def payment_to_low_nivel(self, payment):
         #TICKET_PAYMENT_FIELDS   = "|Pago extra #1|Pago extra #2|10|Otra forma de pago|Detalle de cupones|06|1000"
         try:
-
             payment['monto'] = str(self.monto_format(payment['monto']))
             payment['cantidad_cuotas'] = str(payment['cantidad_cuotas'])
             descripcion_extra1 = '|' + payment['descripcion_extra1']
@@ -316,6 +302,26 @@ class LowNivel:
         except Exception as e:
             raise Exception(e)
 
+    def footer_rg_27743(self, footer_line):
+        try:
+            footer = []
+            footer_string = 'Regimen de Trans. Fiscal al Cons. (Ley 27.743)'
+
+            vat_taxes_amount = string_to_ascci(footer_line['vat_taxes_amount'])
+            offset = 34 - len(vat_taxes_amount)
+            vat_taxes_amount = 'IVA Contenido:' + " " * offset + vat_taxes_amount
+
+            other_taxes_amount = string_to_ascci(footer_line['other_taxes_amount'])
+            offset = 16 - len(other_taxes_amount)
+            other_taxes_amount = 'Otros Impuestos Nac. Indirectos:' + ' ' * offset + other_taxes_amount
+
+            footer.extend((footer_string, vat_taxes_amount, other_taxes_amount, ' '))
+            return footer
+
+        except Exception as e:
+            raise Exception(e)
+
+
     def monto_descuento_format(self, monto):
         str_monto = str(monto)
         str_integer = ''
@@ -359,6 +365,7 @@ class LowNivel:
                 str_decimal += '0'
         #print('entero: ', str_integer, '- str_decimal: ', str_decimal)
         return str_integer + str_decimal
+    
     def qty_format(self, qty):
         str_qty = str(qty)
         str_integer = ''
@@ -381,6 +388,7 @@ class LowNivel:
                 str_decimal += '0'
         #print('entero: ', str_integer, '- str_decimal: ', str_decimal)
         return str_integer + str_decimal
+    
     def price_format(self, price):
         str_price = str(price)
         str_integer = ''

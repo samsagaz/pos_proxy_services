@@ -96,8 +96,8 @@ def json_to_printer(vals):
                 ajuste['codigo_interno'] = 'CodigoInterno4567890123456789012345678901234567890'
             ajustes_low_nivel.append(obj_lowNivel.descuento_to_low_nivel(ajuste))
 
-        for footer in vals["footer"]:
-            footer_low_level.append(obj_lowNivel.footer_to_low_nivel(footer))
+        for footer_line in vals["footer"]:
+            footer_low_level = obj_lowNivel.footer_rg_27743(footer_line)
 
         values = {
             'name' : vals['name'],
@@ -107,26 +107,31 @@ def json_to_printer(vals):
             'ajustes' : ajustes_low_nivel,
             "footer": footer_low_level,
         }
+
         if type == 83:
             res = CI.Tique(values, nota_credito)
             print('response Ticket: ', res)
             return res
+
         elif type == 110:
             res = CI.Tique(values, True)
             print('response Ticket Nota Credito: ', res)
             return res
+
         elif type == 81 or type == 82 or type == 111:
             if not 'cliente' in vals: raise Exception('En los Tique tipo factura es obligatorio el cliente')
             values['cliente'] = obj_lowNivel.client_to_low_nivel(vals['cliente'])
             res = CI.TiqueFactura(values)
             print('response Ticket Factura: ', res)
             return res
+
         elif type == 112 or type == 113 or type == 114 :
             if not 'cliente' in vals: raise Exception('En los Tique tipo factura es obligatorio el cliente')
             values['cliente'] = obj_lowNivel.client_to_low_nivel(vals['cliente'])
             res = CI.TiqueFacturaNC(values)
             print('response Ticket Factura Nota Credito: ', res)
             return res
+
     except Exception as e:
         raise Exception(e)
     return 'Error interno no se pudo imprimir el tiquet'
@@ -157,6 +162,7 @@ jsonTiquet = {
     112 : 'Tique Nota de Crédito A',
     113 : 'Tique Nota de Crédito B',
     114 : 'Tique Nota de Crédito C','''
+
 def test():
 
     jsonTemplate = {
